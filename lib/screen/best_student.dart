@@ -5,9 +5,7 @@ class BestStudent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: SafeArea(
+    return SafeArea(
           child: Card(
             margin: EdgeInsets.all(36),
             child: Padding(
@@ -104,8 +102,6 @@ class BestStudent extends StatelessWidget {
                   ]),
             ),
           ),
-        ),
-      ),
-    );
+        );
   }
 }
