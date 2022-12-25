@@ -1,107 +1,209 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class BestStudent extends StatelessWidget {
+import '../api/apimodel.dart';
+import '../api/datamodel.dart';
+
+class BestStudent extends StatefulWidget {
   const BestStudent({super.key});
+
+  @override
+  State<BestStudent> createState() => _BestStudentState();
+}
+
+DataMahasiswa? data;
+
+class _BestStudentState extends State<BestStudent> {
+  setupApi() async {
+    ApiModel best =
+        new ApiModel(idProdi: "54BBD27B-2376-4CAE-9951-76EF54BD2CA2");
+    await best.getBest().then((value) {
+      if(data == null) {
+        setState(() {
+          data = value;
+        });
+      }
+    });
+  }
+
+  // Future<DataMahasiswa?> _getBestFromSP() async {
+  //   final pref = await SharedPreferences.getInstance();
+  //   final mahasiswa = pref.get('best');
+  //   if(mahasiswa == null) {
+  //     return null;
+  //   }
+  //   return mahasiswa;
+  // }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setupApi();
+  }
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-          child: Card(
-            margin: EdgeInsets.all(36),
-            child: Padding(
-              padding: const EdgeInsets.all(20.0),
-              child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+      child: Card(
+        margin: EdgeInsets.all(36),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: data == null
+              ? const Padding(
+                  padding: EdgeInsets.only(top: 10, bottom: 40),
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Center(
-                      child: Text(
-                        'Lulusan Terbaik Semester Ini',
+                      Text(
+                        'IPK Tertinggi',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          letterSpacing: 2,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Divider(
+                        height: 50,
+                        color: Colors.grey[800],
+                      ),
+                      Text(
+                        'Nama',
                         style: TextStyle(
                           color: Colors.black87,
                           letterSpacing: 2,
                         ),
                       ),
-                    ),
-                    Divider(
-                      height: 50,
-                      color: Colors.grey[800],
-                    ),
-                    Center(
-                      child: CircleAvatar(
-                        backgroundImage: NetworkImage('https://assets.pikiran-rakyat.com/crop/0x0:0x0/x/photo/2022/01/12/9059850.jpg'),
-                        radius: 40,
-                        backgroundColor: Colors.grey[800],
+                      SizedBox(
+                        height: 10,
                       ),
-                    ),
-                    SizedBox(
-                      height: 50,
-                    ),
-                    Text(
-                      'Nama',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      'Naufal Anbial Falah',
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                        letterSpacing: 2,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      'Skills Level',
-                      style: TextStyle(
-                        color: Colors.black87,
-                        letterSpacing: 2,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Text(
-                      '3,4',
-                      style: TextStyle(
-                        color: Colors.blueAccent,
-                        letterSpacing: 2,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        Icon(Icons.email, color: Colors.black87),
-                        SizedBox(
-                          width: 15,
+                      Text(
+                        "${data?.nama_mahasiswa}",
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent,
+                          letterSpacing: 2,
+                          fontSize: 28,
+                          fontWeight: FontWeight.bold,
                         ),
-                        Text(
-                          'naufalanbial@gmail.com',
-                          style: TextStyle(
-                            color: Colors.black87,
-                            letterSpacing: 2,
-                            fontWeight: FontWeight.normal,
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        'Periode masuk',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "${data?.periode_masuk}",
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent,
+                          letterSpacing: 2,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        'Semester Sekarang',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "${data?.semester_sekarang}",
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent,
+                          letterSpacing: 2,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        'Total SKS',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "${data?.total_sks}",
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent,
+                          letterSpacing: 2,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Text(
+                        'IPK',
+                        style: TextStyle(
+                          color: Colors.black87,
+                          letterSpacing: 2,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      Text(
+                        "${data?.ipk}",
+                        style: TextStyle(
+                          color: Colors.lightBlueAccent,
+                          letterSpacing: 2,
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Icon(Icons.check_box, color: Colors.black87),
+                          SizedBox(
+                            width: 5,
                           ),
-                        ),
-                      ],
-                    ),
-                  ]),
-            ),
-          ),
-        );
+                          Text(
+                            'Aktif',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              letterSpacing: 2,
+                              fontWeight: FontWeight.normal,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ]),
+        ),
+      ),
+    );
   }
 }
