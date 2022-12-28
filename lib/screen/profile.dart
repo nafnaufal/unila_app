@@ -12,7 +12,7 @@ class Profile extends StatelessWidget {
       child: Card(
         margin: EdgeInsets.all(36),
         child: Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.all(20),
           child:
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
             Center(

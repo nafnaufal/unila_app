@@ -139,12 +139,12 @@ class DetailStudent extends StatelessWidget {
               Row(
                 crossAxisAlignment: CrossAxisAlignment.center, mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.check_box, color: Colors.black87),
+                  Icon(Icons.question_mark_rounded, color: Colors.black87),
                   SizedBox(
                     width: 5,
                   ),
                   Text(
-                    'Aktif',
+                    data.status,
                     style: TextStyle(
                       color: Colors.black87,
                       letterSpacing: 2,

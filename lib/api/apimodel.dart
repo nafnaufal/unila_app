@@ -18,7 +18,7 @@ class ApiModel {
         "password": 'unilajaya'
       });
       Map token = json.decode(response.body);
-      dataToken = "${token['data']['type']} ${token['data']['token']}";
+      dataToken = "${token['data']['token_bearer']}";
     } catch (e) {
       dataToken = "404";
     }
@@ -33,12 +33,14 @@ class ApiModel {
     await _login().then((value) {
       if (value != "404") {
         token = value;
+      }else{
+        return [];
       }
     });
 
     var header = {"Authorization": token};
     var url =
-        'http://onedata.unila.ac.id/api/live/0.1/mahasiswa/list_mahasiswa?page=${page}&limit=10&sort_by=ASC&id_prodi=${this.idProdi}';
+        'http://onedata.unila.ac.id/api/live/0.1/mahasiswa/list_mahasiswa?page=$page&limit=10&sort_by=ASC&id_prodi=${this.idProdi}';
 
     Response response = await get(
       Uri.parse(url),

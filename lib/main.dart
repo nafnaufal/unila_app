@@ -14,7 +14,6 @@ import 'dart:convert';
 void main() {
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-      title: 'Clean Code',
       routes: {
         '/': (context) => Splash(),
         '/load': (context) => Loading(),
@@ -46,12 +45,15 @@ class _SplashState extends State<Splash> {
             Expanded(
               child: Image.network('http://lp3m.unila.ac.id/wp-content/uploads/2020/06/cropped-cropped-logo-unila-resmi-1.png'),
             ),
-            Text('Unila App'),
+            SizedBox(
+              height: 15,
+            ),
+            Text('Informasi Mahasiswa Ilkom'),
           ],
         ),
         nextScreen: Loading(),
         splashTransition: SplashTransition.fadeTransition,
-        backgroundColor: Colors.blue);
+        backgroundColor: Colors.white);
   }
 }
 
@@ -71,6 +73,7 @@ class _HomeState extends State<Home> {
     BestStudent(),
   ];
 
+  List<Color> sl = [Colors.white, Colors.black, Colors.white];
   
   @override
   Widget build(BuildContext context) {
@@ -87,12 +90,34 @@ class _HomeState extends State<Home> {
         onTap: (i) {
           setState(() {
             _index = i;
+            for (var n = 0; n < 3; n++) {
+              if(n == i){
+                sl[n] = Colors.black;
+              }else{
+                sl[n] = Colors.white;;
+              }
+            }
           });
         },
         items: [
-          Icon(Icons.help),
-          Icon(Icons.home),
-          Icon(Icons.star, color: Colors.amber,),
+          Container(
+            height: 40,
+            child: Column(
+              children: [Icon(Icons.help, color: sl[0]), Text("Ilkom")],
+            ),
+          ),
+          Container(
+            height: 40,
+            child: Column(
+              children: [Icon(Icons.people, color: sl[1],), Text("Mahasiswa")],
+            ),
+          ),
+                    Container(
+            height: 40,
+            child: Column(
+              children: [Icon(Icons.people, color: sl[2]), Text("Best IPK")],
+            ),
+          ),
         ],
         ),
     );

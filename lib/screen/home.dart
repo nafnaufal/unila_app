@@ -76,61 +76,60 @@ class _MenuState extends State<Menu> {
 
   @override
   Widget build(BuildContext context) {
-    firstdata = ModalRoute.of(context)?.settings.arguments as Map;
-    data.addAll(firstdata["data"]);
-    return SafeArea(
-        child: Column(
-      children: [
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Data Mahasiswa',
-            style: TextStyle(
-              color: Colors.black87,
-              letterSpacing: 2,
-              fontSize: 28,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+    if(data.isEmpty){
+      firstdata = ModalRoute.of(context)?.settings.arguments as Map;
+      data.addAll(firstdata["data"]);
+    }
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Data Mahasiswa"),
+        backgroundColor: Colors.lightBlueAccent,
+        centerTitle: true,
+        elevation: 0,
         ),
-        Divider(
-          height: 2,
-          color: Colors.grey[800],
-        ),
-        Expanded(
-          child: ListView.builder(
-              itemCount: data == null ? 0 : data.length,
-              controller: _controller,
-              itemBuilder: (context, index) {
-                return Card(
-                  child: ListTile(
-                    title: Text(data[index].nama_mahasiswa),
-                    subtitle: Text(data[index].npm),
-                    onTap: () {
-                      Navigator.pushNamed(context, '/detail',
-                          arguments: data[index]);
-                      // print("object");
-                    },
-                  ),
-                );
-              }),
-        ),
-        if (_isLoadMoreRunning == true)
-          const Padding(
-            padding: EdgeInsets.only(top: 10, bottom: 40),
-            child: Center(
-              child: CircularProgressIndicator(),
+      body: SafeArea(
+          child: Column(
+        children: [
+          _isFirstLoadRunning
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Expanded(
+                  child: ListView.builder(
+                      itemCount: data == null ? 0 : data.length,
+                      controller: _controller,
+                      itemBuilder: (context, index) {
+                        return Card(
+                          child: ListTile(
+                            title: Text(data[index].nama_mahasiswa),
+                            subtitle: Text(data[index].npm),
+                            onTap: () {
+                              Navigator.pushNamed(context, '/detail',
+                                  arguments: data[index]);
+                              // print("object");
+                            },
+                          ),
+                        );
+                      }),
+                ),
+          if (_isLoadMoreRunning == true)
+            const Padding(
+              padding: EdgeInsets.only(top: 10, bottom: 40),
+              child: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-          ),
-        if (_hasNextPage == false)
-          Container(
-            padding: const EdgeInsets.only(top: 30, bottom: 40),
-            color: Colors.blue,
-            child: const Center(
-              child: Text('No more data!'),
+          if (_hasNextPage == false)
+            Container(
+              padding: const EdgeInsets.only(top: 30, bottom: 40),
+              color: Colors.blue,
+              child: const Center(
+                child: Text('No more data!'),
+              ),
             ),
-          ),
-      ],
-    ));
+        ],
+      )),
+    );
   }
 }
